@@ -99,23 +99,39 @@ const App = function () {
   };
 
   return (
-    <div>
-      {todos.map(todo => (
-        <Fragment key={todo.id}>
-          <input
-            type="checkbox"
-            id={`${todo.id}`}
-            checked={todo.done}
-            onChange={() => toggleTodo(todo)}
-          />
-          <label htmlFor={`${todo.id}`}>{todo.text}</label>
-          <br />
-        </Fragment>
-      ))}
-      <button onClick={() => toggleTodos(todos)}>Mark all as completed</button>
-      <pre>{JSON.stringify(todos, null, 2)}</pre>
+    <div className="container" style={styles.flexCenter}>
+      <div style={{ ...styles.flexCenter, flex: 1 }}>
+        <div>
+          {todos.map(todo => (
+            <Fragment key={todo.id}>
+              <input
+                type="checkbox"
+                id={`${todo.id}`}
+                checked={todo.done}
+                onChange={() => toggleTodo(todo)}
+              />
+              <label htmlFor={`${todo.id}`}>{todo.text}</label>
+              <br />
+            </Fragment>
+          ))}
+          <button onClick={() => toggleTodos(todos)}>
+            Mark all as completed
+          </button>
+        </div>
+      </div>
+      <div style={{ ...styles.flexCenter, flex: 1 }}>
+        <pre>{JSON.stringify(todos, null, 2)}</pre>
+      </div>
     </div>
   );
+};
+
+const styles = {
+  flexCenter: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 };
 
 export default App;
