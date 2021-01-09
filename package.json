@@ -1,5 +1,5 @@
 {
-  "name": "cra-typescript-boilerplate",
+  "name": "kudulis",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -19,10 +19,26 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,sass,md,mdx}\"",
+    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx --ignore-pattern public ."
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "sort-imports": [
+        "warn",
+        {
+          "ignoreCase": true,
+          "memberSyntaxSortOrder": [
+            "all",
+            "multiple",
+            "single",
+            "none"
+          ]
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
