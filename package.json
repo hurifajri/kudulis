@@ -1,5 +1,5 @@
 {
-  "name": "kudulis",
+  "name": "cra-typescript-boilerplate",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,48 +10,19 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
-    "husky": "^4.3.7",
-    "lint-staged": "^10.5.3",
-    "prettier": "^2.2.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0",
-    "styled-components": "^5.2.1",
     "typescript": "~3.7.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write"
-    ]
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "sort-imports": [
-        "warn",
-        {
-          "ignoreCase": true,
-          "memberSyntaxSortOrder": [
-            "all",
-            "multiple",
-            "single",
-            "none"
-          ]
-        }
-      ]
-    }
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
