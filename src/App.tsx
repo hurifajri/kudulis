@@ -61,7 +61,7 @@ const App = function () {
 
   // Takes an array of todo items and returns
   // a new array where "done" is all true
-  const completeAll = function (todos: readonly Todo[]): CompletedTodo[] {
+  const completeTodos = function (todos: readonly Todo[]): CompletedTodo[] {
     return todos.map(todo => ({
       ...todo,
       done: true,
@@ -93,8 +93,8 @@ const App = function () {
     setTodos(updatedTodos);
   };
 
-  const toggleTodos = function (): void {
-    const completedTodos = completeAll(todos);
+  const toggleTodos = function (todos: Todo[]): void {
+    const completedTodos = completeTodos(todos);
     setTodos(completedTodos);
   };
 
@@ -105,7 +105,6 @@ const App = function () {
           <input
             type="checkbox"
             id={`${todo.id}`}
-            value={todo.text}
             checked={todo.done}
             onChange={() => toggleTodo(todo)}
           />
@@ -113,7 +112,8 @@ const App = function () {
           <br />
         </Fragment>
       ))}
-      <button onClick={() => toggleTodos()}>Mark all as completed</button>
+      <button onClick={() => toggleTodos(todos)}>Mark all as completed</button>
+      <pre>{JSON.stringify(todos, null, 2)}</pre>
     </div>
   );
 };
