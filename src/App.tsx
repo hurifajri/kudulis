@@ -122,6 +122,7 @@ export default function () {
 
   const handleSubmit = function (event: any) {
     event.preventDefault();
+    setNewTodoText('');
   };
 
   const handleChange = function (event: any) {
@@ -146,7 +147,11 @@ export default function () {
                 onChange={() => toggleTodo(todo)}
               />
               <label htmlFor={`${todo.id}`}>{todo.text}</label>
-              <button onClick={() => removeTodo(todo.id)}>x</button>
+              <button onClick={() => removeTodo(todo.id)}>
+                <span role="img" aria-label="Remove">
+                  ❌
+                </span>
+              </button>
               <br />
             </Fragment>
           ))}
@@ -157,6 +162,17 @@ export default function () {
       </div>
       <div style={{ ...styles.flexCenter, flex: 1 }}>
         <pre>{JSON.stringify(todos, null, 2)}</pre>
+        <pre>
+          const handleChange = function (event: any) {`{`}
+          <br />
+          &nbsp; &nbsp; setNewTodoText({newTodoText || 'event.target.value'});
+          <br />
+          {`}`}
+          <br />
+          &lt;input type="text" value={`{newTodoText}`} onChange=
+          {`{event => handleChange(event)}`} /&gt; <br />
+          &lt;button onClick={`{() => addTodo()}`} &gt;Tambih&lt;/button&gt;
+        </pre>
       </div>
     </div>
   );
