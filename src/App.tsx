@@ -1,76 +1,99 @@
 import React, { Fragment, useState } from 'react';
 
-const App = function () {
+export default function () {
   // Associated data.
   const initialTodos = [
     {
       id: 1,
-      text: 'Do laundry',
+      text: 'Netepan dhuha',
       done: false,
-      // place: 'home',
     },
     {
       id: 2,
-      text: 'Email boss',
+      text: 'Meser cabe ka warung',
       done: false,
-      // place: 'work',
     },
     {
       id: 3,
-      text: 'Go to gym',
+      text: 'Icalan tahu buleud',
       done: false,
-      // place: { custom: 'Gym' },
     },
     {
       id: 4,
-      text: 'Buy milk',
+      text: 'Ngaos ka madrasah',
       done: false,
-      // place: { custom: 'Supermarket' },
     },
-    { id: 5, text: 'Read a book', done: false },
+    {
+      id: 5,
+      text: 'Ngadamel peer sakola',
+      done: false,
+    },
   ];
   const [todos, setTodos] = useState(initialTodos);
+  const [newTodoText, setNewTodoText] = useState('');
+  const [isToggledAll, setIsToggledAll] = useState(false);
 
-  type Place = 'home' | 'work' | { custom: string };
-
+  // Type for single todo.
   type Todo = Readonly<{
     id: number;
     text: string;
     done: boolean;
-    // place is optional
-    // place?: Place;
   }>;
 
-  // Override the done property of Todo
-  type CompletedTodo = Todo & {
-    readonly done: true;
+  // Override the done property of Todo.
+  type NewTodo = Todo & { id: number; readonly done: false };
+  // type CompletedTodo = Todo & { readonly done: true };
+
+  const addTodo = function (): void {
+    const createdTodo = createTodo();
+    const updatedTodos = updateTodos(createdTodo);
+    const sortedTodos = sortTodos(updatedTodos);
+    setTodos(sortedTodos);
   };
 
-  // Takes a Place and returns a string
-  // that can be used for the place label UI
-  const placeToString = function (place: Place): string {
-    if (place === 'home') {
-      return '🏡Home';
-    } else if (place === 'work') {
-      return '🏢 Work';
-    } else {
-      // place is guaranteed to be { custom: string }
-      return '📍' + place.custom;
-    }
+  // Takes id of selected todo and filter out todos
+  // of selected todo.
+  const removeTodo = function (id: Todo['id']): void {
+    const filteredTodos = filterTodos(id);
+    setTodos(filteredTodos);
   };
 
-  // Takes an array of todo items and returns
-  // a new array where "done" is all true
-  const completeTodos = function (todos: readonly Todo[]): CompletedTodo[] {
-    return todos.map(todo => ({
-      ...todo,
-      done: true,
-    }));
+  // Takes a single todo object and update its "done" property
+  // with the opposite bolean value and "setTodos"
+  // with a new array of todo objects containing updated todo.
+  const toggleTodo = function (todo: Todo): void {
+    const updatedTodo = updateTodo(todo);
+    const updatedTodos = updateTodos(updatedTodo);
+    const sortedTodos = sortTodos(updatedTodos);
+    setTodos(sortedTodos);
+  };
+
+  // Takes array of todo objects and "setTodos"
+  // with new todo objects where "done" is all true.
+  const toggleTodos = function (todos: Todo[]): void {
+    const toggledAll = toggleAll(todos);
+    setTodos(toggledAll);
+    setIsToggledAll(!isToggledAll);
+  };
+
+  // Helper functions to filter and sort todos.
+  const filterTodos = (id: Todo['id']): Todo[] => todos.filter(todo => todo.id !== id);
+  const sortTodos = (todos: Todo[]): Todo[] => todos.sort((a, b) => a.id - b.id);
+
+  const createTodo = function (): NewTodo {
+    const ids = todos.map(todo => todo.id);
+    const id = Math.max(...ids) + 1;
+
+    return {
+      id,
+      text: newTodoText,
+      done: false,
+    };
   };
 
   // Takes a single todo object and returns
   // a new todo object containing the opposite
-  // boolean value for the "done" proprty.
+  // boolean value for the "done" property.
   const updateTodo = function (todo: Todo): Todo {
     return {
       id: todo.id,
@@ -79,29 +102,41 @@ const App = function () {
     };
   };
 
-  const updateTodos = function (todo: Todo, updatedTodo: Todo): Todo[] {
-    return [
-      ...todos.slice(0, todo.id - 1),
-      updatedTodo,
-      ...todos.slice(todo.id),
-    ];
+  // Takes a single updated todo object and returns
+  // a new array of todo objects.
+  const updateTodos = function (updatedTodo: Todo): Todo[] {
+    const filteredTodos = filterTodos(updatedTodo.id);
+    const joinedTodos = [...filteredTodos, updatedTodo];
+    return joinedTodos;
   };
 
-  const toggleTodo = function (todo: Todo): void {
-    const updatedTodo = updateTodo(todo);
-    const updatedTodos = updateTodos(todo, updatedTodo);
-    setTodos(updatedTodos);
+  // Takes an array of todo items and returns
+  // a new array where "done" is all true.
+  const toggleAll = function (todos: readonly Todo[]): Todo[] {
+    const toggledAll = todos.map(todo => {
+      const done = isToggledAll ? true : false;
+      return { ...todo, done: !done };
+    });
+    return toggledAll;
   };
 
-  const toggleTodos = function (todos: Todo[]): void {
-    const completedTodos = completeTodos(todos);
-    setTodos(completedTodos);
+  const handleSubmit = function (event: any) {
+    event.preventDefault();
+  };
+
+  const handleChange = function (event: any) {
+    setNewTodoText(event.target.value);
   };
 
   return (
     <div className="container" style={styles.flexCenter}>
       <div style={{ ...styles.flexCenter, flex: 1 }}>
         <div>
+          <form onSubmit={event => handleSubmit(event)}>
+            <input type="text" value={newTodoText} onChange={event => handleChange(event)} />
+            <button onClick={() => addTodo()}>Tambih</button>
+          </form>
+          <br />
           {todos.map(todo => (
             <Fragment key={todo.id}>
               <input
@@ -111,11 +146,12 @@ const App = function () {
                 onChange={() => toggleTodo(todo)}
               />
               <label htmlFor={`${todo.id}`}>{todo.text}</label>
+              <button onClick={() => removeTodo(todo.id)}>x</button>
               <br />
             </Fragment>
           ))}
           <button onClick={() => toggleTodos(todos)}>
-            Mark all as completed
+            {isToggledAll ? 'Hapus tanda sadayana' : 'Tandaan sadayana'}
           </button>
         </div>
       </div>
@@ -124,7 +160,7 @@ const App = function () {
       </div>
     </div>
   );
-};
+}
 
 const styles = {
   flexCenter: {
@@ -133,5 +169,3 @@ const styles = {
     alignItems: 'center',
   },
 };
-
-export default App;
