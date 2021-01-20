@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import './assets/css/global-styles.css';
 
 export default function () {
   // Associated data.
@@ -130,58 +131,43 @@ export default function () {
   };
 
   return (
-    <div className="container" style={styles.flexCenter}>
-      <div style={{ ...styles.flexCenter, flex: 1 }}>
-        <div>
-          <form onSubmit={event => handleSubmit(event)}>
-            <input type="text" value={newTodoText} onChange={event => handleChange(event)} />
-            <button onClick={() => addTodo()}>Tambih</button>
-          </form>
-          <br />
-          {todos.map(todo => (
-            <Fragment key={todo.id}>
-              <input
-                type="checkbox"
-                id={`${todo.id}`}
-                checked={todo.done}
-                onChange={() => toggleTodo(todo)}
-              />
-              <label htmlFor={`${todo.id}`}>{todo.text}</label>
-              <button onClick={() => removeTodo(todo.id)}>
-                <span role="img" aria-label="Remove">
-                  ❌
-                </span>
-              </button>
-              <br />
-            </Fragment>
-          ))}
-          <button onClick={() => toggleTodos(todos)}>
-            {isToggledAll ? 'Hapus tanda sadayana' : 'Tandaan sadayana'}
-          </button>
+    <div className="container">
+      <div className="row">
+        <div className="col-6">
+          <div>
+            <form onSubmit={event => handleSubmit(event)}>
+              <input type="text" value={newTodoText} onChange={event => handleChange(event)} />
+              <button onClick={() => addTodo()}>Tambih</button>
+            </form>
+            <br />
+            {todos.map(todo => (
+              <Fragment key={todo.id}>
+                <input
+                  type="checkbox"
+                  id={`${todo.id}`}
+                  checked={todo.done}
+                  onChange={() => toggleTodo(todo)}
+                />
+                <label htmlFor={`${todo.id}`}>{todo.text}</label>
+                <button onClick={() => removeTodo(todo.id)}>
+                  <span role="img" aria-label="Remove">
+                    ❌
+                  </span>
+                </button>
+                <br />
+              </Fragment>
+            ))}
+            <button onClick={() => toggleTodos(todos)}>
+              {isToggledAll ? 'Hapus tanda sadayana' : 'Tandaan sadayana'}
+            </button>
+          </div>
         </div>
-      </div>
-      <div style={{ ...styles.flexCenter, flex: 1 }}>
-        <pre>{JSON.stringify(todos, null, 2)}</pre>
-        <pre>
-          const handleChange = function (event: any) {`{`}
-          <br />
-          &nbsp; &nbsp; setNewTodoText({newTodoText || 'event.target.value'});
-          <br />
-          {`}`}
-          <br />
-          &lt;input type="text" value={`{newTodoText}`} onChange=
-          {`{event => handleChange(event)}`} /&gt; <br />
-          &lt;button onClick={`{() => addTodo()}`} &gt;Tambih&lt;/button&gt;
-        </pre>
+        <div className="col-6">
+          <pre>
+            <code>{JSON.stringify(todos, null, 2)}</code>
+          </pre>
+        </div>
       </div>
     </div>
   );
 }
-
-const styles = {
-  flexCenter: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-};
